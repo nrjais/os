@@ -7,6 +7,10 @@ edition = '2018'
 test-args = [
     '-device',
     'isa-debug-exit,iobase=0xf4,iosize=0x04',
+    '-serial',
+    'stdio',
+    '-display',
+    'none',
 ]
 test-success-exit-code = 33
 [profile.dev]
@@ -20,7 +24,12 @@ bootloader = '0.8.3'
 volatile = '0.2.6'
 spin = '0.5.2'
 x86_64 = '0.8.2'
+uart_16550 = '0.2.0'
 
 [dependencies.lazy_static]
 version = '1.4.0'
 features = ['spin_no_std']
+
+[[test]]
+name = "should_panic"
+harness = false
