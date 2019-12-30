@@ -16,6 +16,7 @@ lazy_static! {
   static ref IDT: InterruptDescriptorTable = {
     let mut idt = InterruptDescriptorTable::new();
     idt.breakpoint.set_handler_fn(breakpoint_handler);
+    idt.page_fault.set_handler_fn(page_fault_handler);
     unsafe {
       idt
         .double_fault
@@ -38,6 +39,19 @@ extern "x86-interrupt" fn breakpoint_handler(stack_frame: &mut InterruptStackFra
 
 extern "x86-interrupt" fn double_fault_handler(stack_frame: &mut InterruptStackFrame, _error_code: u64) -> ! {
   panic!("EXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
+}
+
+use crate::hlt_loop;
+use x86_64::structures::idt::PageFaultErrorCode;
+
+extern "x86-interrupt" fn page_fault_handler(stack_frame: &mut InterruptStackFrame, error_code: PageFaultErrorCode) {
+  use x86_64::registers::control::Cr2;
+
+  println!("EXCEPTION: PAGE FAULT");
+  println!("Accessed Address: {:?}", Cr2::read());
+  println!("Error Code: {:?}", error_code);
+  println!("{:#?}", stack_frame);
+  hlt_loop();
 }
 
 #[derive(Debug, Clone, Copy)]
