@@ -5,6 +5,9 @@
 #![reexport_test_harness_main = "test_main"]
 #![feature(abi_x86_interrupt)]
 #![feature(alloc_error_handler)]
+#![feature(const_fn)]
+#![feature(alloc_layout_extra)]
+#![feature(const_in_array_repeat_expressions)]
 
 pub mod allocator;
 pub mod gdt;
@@ -15,10 +18,6 @@ pub mod vga_buffer;
 extern crate alloc;
 
 use core::panic::PanicInfo;
-use linked_list_allocator::LockedHeap;
-
-#[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
 #[alloc_error_handler]
 fn alloc_error_handler(layout: alloc::alloc::Layout) -> ! {
