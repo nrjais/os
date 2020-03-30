@@ -31,7 +31,7 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 use alloc::boxed::Box;
-use os::{serial_print, serial_println};
+use os::{allocator::HEAP_SIZE, serial_print, serial_println};
 
 #[test_case]
 fn simple_allocation() {
@@ -58,7 +58,7 @@ fn large_vec() {
 #[test_case]
 fn many_boxes() {
   serial_print!("many_boxes... ");
-  for i in 0..10_000 {
+  for i in 0..HEAP_SIZE {
     let x = Box::new(i);
     assert_eq!(*x, i);
   }

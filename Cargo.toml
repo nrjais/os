@@ -30,14 +30,14 @@ panic = 'abort'
 [dependencies]
 volatile = '0.2.6'
 spin = '0.5.2'
-x86_64 = '0.8.2'
-uart_16550 = '0.2.1'
+x86_64 = '0.9.6'
+uart_16550 = '0.2.4'
 pic8259_simple = '0.1.1'
 pc-keyboard = '0.5.0'
-linked_list_allocator = '0.6.4'
+linked_list_allocator = '0.8.1'
 
 [dependencies.bootloader]
-version = '0.8.3'
+version = '0.9.0'
 features = ['map_physical_memory']
 
 [dependencies.lazy_static]
