@@ -11,6 +11,8 @@ use os::allocator;
 use os::memory;
 use os::memory::BootInfoFrameAllocator;
 use os::println;
+use os::task::keyboard;
+use os::task::{executor::Executor, Task};
 
 entry_point!(kernel_main);
 
@@ -28,8 +30,9 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
   #[cfg(test)]
   test_main();
 
-  println!("It did not crash!");
-  os::hlt_loop();
+  let mut executor = Executor::new();
+  executor.spawn(Task::new(keyboard::print_keypresses()));
+  executor.run();
 }
 
 #[cfg(not(test))]
